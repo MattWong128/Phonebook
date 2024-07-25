@@ -14,7 +14,7 @@ const App = () => {
   const [message, setMessage] = useState(null);
   console.log('Current persons:', persons);
 
-  const queryResult = persons.filter((person) => person.name.includes(search));
+  const queryResult = persons.filter((person) => person.name.toLowerCase().includes(search.toLowerCase()));
 
   useEffect(() => {
     Server.get().then((initialNumber) => {
@@ -31,8 +31,22 @@ const App = () => {
   const handleSetNewNumber = (e) => {
     setNewNumber(e.target.value);
   };
+  const showMessage = (message) => {
+    setMessage(message);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  };
   const addNewPerson = (event) => {
     event.preventDefault();
+    const newPersonObj = {
+      name: newName,
+      number: newNumber,
+    };
+    if (newPersonObj.name == '' || newPersonObj.number == '') {
+      showMessage('Both a name and number must be provided');
+      return;
+    }
     const doesNameExist = persons.some((person) => person.name == newName);
     // if (doesNameExist) {
     //   if (window.confirm(`${newName} is already added to the phone book, replace the old number with a new one?`)) {
@@ -54,16 +68,10 @@ const App = () => {
     //   }
     //   return;
     // }
-    const newPersonObj = {
-      name: newName,
-      number: newNumber,
-    };
+
     Server.create(newPersonObj).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
-      setMessage(`Added  ${newName}`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
+      showMessage(`Added  ${newName}`);
       setNewName('');
       setNewNumber('');
     });

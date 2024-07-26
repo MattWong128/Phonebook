@@ -37,6 +37,7 @@ morgan.token('person', (req, res) => {
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'));
 
 app.listen(PORT, () => console.log('listening on port ', PORT));
+console.log('env port ', process.env.PORT);
 
 app.get('/', (req, res) => res.send('hello'));
 

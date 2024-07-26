@@ -92,9 +92,8 @@ const App = () => {
       <h2>Phonebook</h2>
       <Notification message={message} />
       <Filter searchQuery={search} onChange={handleFilterChange} />
-      <h2>Add new</h2>
+      <h2>Add New Numbers</h2>
 
-      <h2>Numbers</h2>
       <PersonForm
         onSubmit={addNewPerson}
         newName={newName}

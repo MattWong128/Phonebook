@@ -30,7 +30,7 @@ let persons = [
 ];
 app.use(express.json());
 app.use(cors());
-// app.use(express.static('dist'));
+app.use(express.static('dist'));
 morgan.token('person', (req, res) => {
   if (req.method == 'GET') return '';
   return JSON.stringify(req.body);
@@ -44,7 +44,7 @@ app.get('/', (req, res) => res.send('hello'));
 app.get('/api/persons', (req, res) => {
   Person.find({})
     .then((persons) => res.json(persons))
-    .catch((err) => console.log('error'));
+    .catch((err) => res.json({ error: err.message }));
 });
 
 app.get('/api/persons/info', (req, res) => {

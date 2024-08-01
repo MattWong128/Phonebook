@@ -6,8 +6,13 @@ mongoose.set('strictQuery', false);
 
 mongoose
   .connect(url)
-  .then(console.log('database connected'))
-  .catch(() => console.log('databased failed'));
+
+  .then((result) => {
+    console.log('DATABASE SUCCESSFULLY CONNECTED');
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message);
+  });
 
 const personSchema = new Schema({
   name: String,
@@ -21,5 +26,14 @@ personSchema.set('toJSON', {
   },
 });
 const Person = mongoose.model('Person', personSchema);
+// const person = new Person({
+//   name: 'MARCUS',
+//   number: 123,
+// });
+// person.save();
+
+// Person.find({})
+//   .then((persons) => console.log(persons))
+//   .catch((err) => console.log('eror', err));
 
 module.exports = Person;

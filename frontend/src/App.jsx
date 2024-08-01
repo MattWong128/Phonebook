@@ -69,12 +69,14 @@ const App = () => {
     //   return;
     // }
 
-    Server.create(newPersonObj).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      showMessage(`Added  ${newName}`);
-      setNewName('');
-      setNewNumber('');
-    });
+    Server.create(newPersonObj)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        showMessage(`Added  ${newName}`);
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch((err) => console.log(err));
 
     console.log(persons);
     console.log('adding new persone: ', newPersonObj);

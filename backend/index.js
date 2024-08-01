@@ -90,11 +90,10 @@ app.post('/api/persons', (req, res) => {
       error: 'must provide unique name',
     });
 
-  const personToAdd = {
+  const personToAdd = new Person({
     ...person,
-    id: String(Math.floor(Math.random() * 1000)),
-  };
-
+  });
   persons = persons.concat(personToAdd);
+  personToAdd.save().then(() => console.log('added person succesfully'));
   res.status(201).json(personToAdd);
 });

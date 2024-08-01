@@ -1,9 +1,9 @@
 require('dotenv').config();
+const Person = require('./model/personDB');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const PORT = process.env.PORT;
-const Person = require('./model/personDB');
 
 const app = express();
 

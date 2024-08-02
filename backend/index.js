@@ -59,7 +59,7 @@ app.get('/api/persons/:id', (req, res) => {
       if (!person) return res.status(404).end('person not found');
       res.status(200).json(person);
     })
-    .catch((err) => res.send({ error: `${id} is an invalid id` }));
+    .catch((err) => res.status(500).json({ error: `${id} is an invalid id` }));
 });
 
 app.delete('/api/persons/:id', (req, res) => {

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const baseUrl = '/api/persons';
-// const baseUrl = '/api/persons';
 
 const create = (personObj) => {
   return axios.post(baseUrl, personObj).then((res) => res.data);
@@ -12,7 +11,6 @@ const get = () => {
 
 const del = (id) => {
   return axios.delete(`${baseUrl}/${id}`).then((res) => {
-    // console.log('deleting', res.data);
     return res.data;
   });
 };

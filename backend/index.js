@@ -32,7 +32,7 @@ morgan.token('person', (req, res) => {
   if (req.method == 'GET') return '';
   return JSON.stringify(req.body);
 });
-app.use(express.static('dist'));
+// app.use(express.static('dist'));
 app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'));
 app.use(cors());
@@ -66,7 +66,6 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   const id = req.params.id;
-  // const person = persons.find((person) => person.id == id);
   Person.findByIdAndDelete(id)
     .then((person) => {
       if (!person) return res.status(404).end('person not found or already deleted');
@@ -110,6 +109,21 @@ app.post('/api/persons', (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.put('/api/person/:id', (req, res, next) => {
+  const body = req.body;
+  updatedPerson = {
+    name: body.name,
+    number: body.number,
+  };
+  console.log(updatedPerson);
+
+  Person.findByIdAndUpdate(req.params.id, updatedPerson, { new: true })
+    .then((result) => {
+      if (!result) return res.status(404).json({ error: 'person dne or already deleted' });
+      res.status(204).end();
+    })
+    .catch((err) => next(err));
+});
 const unknownEndpoint = (req, res) => {
   res.status(404).json({ error: 'unknown Endpoint' });
 };
@@ -123,5 +137,4 @@ const errorHandler = (err, req, res, next) => {
   }
   next(err);
 };
-
 app.use(errorHandler);

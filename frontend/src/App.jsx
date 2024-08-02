@@ -48,26 +48,26 @@ const App = () => {
       return;
     }
     const doesNameExist = persons.some((person) => person.name == newName);
-    // if (doesNameExist) {
-    //   if (window.confirm(`${newName} is already added to the phone book, replace the old number with a new one?`)) {
-    //     const personTochange = persons.find((person) => person.name == newName);
-    //     const updatedPerson = { ...personTochange, number: newNumber };
-    //     setPersons(persons.map((person) => (person.id !== updatedPerson.id ? person : updatedPerson)));
+    if (doesNameExist) {
+      if (window.confirm(`${newName} is already added to the phone book, replace the old number with a new one?`)) {
+        const personTochange = persons.find((person) => person.name == newName);
+        const updatedPerson = { ...personTochange, number: newNumber };
+        setPersons(persons.map((person) => (person.id !== updatedPerson.id ? person : updatedPerson)));
 
-    //     Server.update(updatedPerson)
-    //       .then((returnedPerson) => {
-    //         // setPersons(persons.map((person) => (person.id !== updatedPerson.id ? person : returnedPerson)));
-    //       })
-    //       .catch((err) => {
-    //         setMessage(`Information of ${updatedPerson.name} has already been removed`);
-    //         Server.get().then((currentPersons) => setPersons(currentPersons));
-    //         setTimeout(() => {
-    //           setMessage(null);
-    //         }, 5000);
-    //       });
-    //   }
-    //   return;
-    // }
+        Server.update(updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(persons.map((person) => (person.id !== updatedPerson.id ? person : returnedPerson)));
+          })
+          .catch((err) => {
+            setMessage(`Information of ${updatedPerson.name} has already been removed`);
+            Server.get().then((currentPersons) => setPersons(currentPersons));
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+          });
+      }
+      return;
+    }
 
     Server.create(newPersonObj)
       .then((returnedPerson) => {

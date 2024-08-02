@@ -28,14 +28,14 @@ let persons = [
     number: '39-23-6423122',
   },
 ];
-app.use(express.json());
-app.use(cors());
-app.use(express.static('dist'));
 morgan.token('person', (req, res) => {
   if (req.method == 'GET') return '';
   return JSON.stringify(req.body);
 });
+app.use(express.static('dist'));
+app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'));
+app.use(cors());
 
 app.listen(PORT, () => console.log('listening on port ', PORT));
 
@@ -52,7 +52,7 @@ app.get('/api/persons/info', (req, res) => {
   res.send(`<p>Phonebook has info ${persons.length} on people <br/> ${date.toString()}</p>`);
 });
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   const id = req.params.id;
   Person.findById(id)
     .then((person) => {
@@ -60,8 +60,9 @@ app.get('/api/persons/:id', (req, res) => {
       res.status(200).json(person);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       res.status(400).json({ error: `${id} is an invalid id` });
+      // next(err);
     });
 });
 
@@ -107,3 +108,8 @@ app.post('/api/persons', (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).json({ error: 'unknown Endpoint' });
+};
+app.use(unknownEndpoint);

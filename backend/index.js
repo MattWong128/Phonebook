@@ -119,7 +119,7 @@ app.put('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndUpdate(req.params.id, updatedPerson, { new: true })
     .then((result) => {
       if (!result) return res.status(404).json({ error: 'person dne or already deleted' });
-      res.status(204).send(body);
+      res.status(200).json(body);
     })
     .catch((err) => next(err));
 });

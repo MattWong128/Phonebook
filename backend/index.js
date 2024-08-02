@@ -60,9 +60,7 @@ app.get('/api/persons/:id', (req, res, next) => {
       res.status(200).json(person);
     })
     .catch((err) => {
-      // console.log(err);
-      res.status(400).json({ error: `${id} is an invalid id` });
-      // next(err);
+      next(err);
     });
 });
 
@@ -113,3 +111,14 @@ const unknownEndpoint = (req, res) => {
   res.status(404).json({ error: 'unknown Endpoint' });
 };
 app.use(unknownEndpoint);
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err.message);
+
+  if (err.name === 'CastError') {
+    return res.status(400).send({ error: 'malformatted id' });
+  }
+  next(err);
+};
+
+app.use(errorHandler);

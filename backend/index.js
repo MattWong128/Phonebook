@@ -115,10 +115,10 @@ app.put('/api/person/:id', (req, res, next) => {
     name: body.name,
     number: body.number,
   };
-  console.log(updatedPerson);
 
   Person.findByIdAndUpdate(req.params.id, updatedPerson, { new: true })
     .then((result) => {
+      console.log(result);
       if (!result) return res.status(404).json({ error: 'person dne or already deleted' });
       res.status(204).end();
     })

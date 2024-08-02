@@ -49,7 +49,11 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/info', (req, res) => {
   const date = new Date();
-  res.send(`<p>Phonebook has info ${persons.length} on people <br/> ${date.toString()}</p>`);
+  Person.countDocuments({})
+    .then((count) => {
+      res.send(`<p>Phonebook has info ${count} on people <br/> ${date.toString()}</p>`);
+    })
+    .catch((err) => res.json({ error: err.message }));
 });
 
 app.get('/api/persons/:id', (req, res, next) => {

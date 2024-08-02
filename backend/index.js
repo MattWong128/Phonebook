@@ -54,10 +54,12 @@ app.get('/api/persons/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
   const id = req.params.id;
-  const person = persons.find((person) => person.id == id);
-
-  if (!person) return res.status(404).end('person not found');
-  res.status(200).json(person);
+  Person.findById(id)
+    .then((person) => {
+      if (!person) return res.status(404).end('person not found');
+      res.status(200).json(person);
+    })
+    .catch((err) => res.send({ error: `${id} is an invalid id` }));
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -74,6 +76,7 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const person = req.body;
   const existingNames = persons.map((p) => p.name);
+  console.log('EXISTING NAMES', existingNames);
 
   if (!person) return res.status(400).end('invalid person cant add');
   if (!person.name)
@@ -94,6 +97,6 @@ app.post('/api/persons', (req, res) => {
     ...person,
   });
   persons = persons.concat(personToAdd);
-  personToAdd.save().then(() => console.log('added person succesfully'));
+  personToAdd.save().then(() => console.log('added person succesfully '));
   res.status(201).json(personToAdd);
 });

@@ -59,7 +59,10 @@ app.get('/api/persons/:id', (req, res) => {
       if (!person) return res.status(404).end('person not found');
       res.status(200).json(person);
     })
-    .catch((err) => res.status(500).json({ error: `${id} is an invalid id` }));
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ error: `${id} is an invalid id` });
+    });
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -75,28 +78,32 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const person = req.body;
-  const existingNames = persons.map((p) => p.name);
-  console.log('EXISTING NAMES', existingNames);
+  Person.find({})
+    .then((peopleJSON) => {
+      const existingNames = peopleJSON.map((person) => person.name);
+      console.log('EXISTING NAMES', existingNames);
 
-  if (!person) return res.status(400).end('invalid person cant add');
-  if (!person.name)
-    return res.status(400).json({
-      error: 'must provide name',
-    });
+      if (!person) return res.status(400).end('invalid person cant add');
+      if (!person.name)
+        return res.status(400).json({
+          error: 'must provide name',
+        });
 
-  if (!person.number)
-    return res.status(400).json({
-      error: 'must provide number',
-    });
-  if (existingNames.find((p) => p == person.name))
-    return res.status(400).json({
-      error: 'must provide unique name',
-    });
+      if (!person.number)
+        return res.status(400).json({
+          error: 'must provide number',
+        });
+      if (existingNames.find((p) => p == person.name))
+        return res.status(400).json({
+          error: 'must provide unique name',
+        });
 
-  const personToAdd = new Person({
-    ...person,
-  });
-  persons = persons.concat(personToAdd);
-  personToAdd.save().then(() => console.log('added person succesfully '));
-  res.status(201).json(personToAdd);
+      const personToAdd = new Person({
+        ...person,
+      });
+      persons = persons.concat(personToAdd);
+      personToAdd.save().then(() => console.log('added person succesfully '));
+      res.status(201).json(personToAdd);
+    })
+    .catch((err) => console.log(err));
 });

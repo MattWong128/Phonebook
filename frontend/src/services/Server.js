@@ -12,7 +12,7 @@ const get = () => {
 
 const del = (id) => {
   return axios.delete(`${baseUrl}/${id}`).then((res) => {
-    console.log('deleting', res.data);
+    // console.log('deleting', res.data);
     return res.data;
   });
 };

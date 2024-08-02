@@ -109,7 +109,7 @@ app.post('/api/persons', (req, res) => {
     .catch((err) => console.log(err));
 });
 
-app.put('/api/person/:id', (req, res, next) => {
+app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body;
   updatedPerson = {
     name: body.name,
@@ -118,7 +118,6 @@ app.put('/api/person/:id', (req, res, next) => {
 
   Person.findByIdAndUpdate(req.params.id, updatedPerson, { new: true })
     .then((result) => {
-      console.log(result);
       if (!result) return res.status(404).json({ error: 'person dne or already deleted' });
       res.status(204).end();
     })

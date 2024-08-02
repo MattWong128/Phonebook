@@ -64,15 +64,18 @@ app.get('/api/persons/:id', (req, res, next) => {
     });
 });
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
   const id = req.params.id;
-  const person = persons.find((person) => person.id == id);
+  // const person = persons.find((person) => person.id == id);
+  Person.findByIdAndDelete(id)
+    .then((person) => {
+      if (!person) return res.status(404).end('person not found or already deleted');
 
-  if (!person) return res.status(404).end('person not found or already deleted');
-
-  persons = persons.filter((p) => p.id != id);
-
-  res.status(200).send(`${person.name} id: ${person.id} was deleted`);
+      res.status(200).send(`${person.name} id: ${person.id} was deleted`);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 app.post('/api/persons', (req, res) => {

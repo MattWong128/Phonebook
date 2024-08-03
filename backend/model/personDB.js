@@ -22,9 +22,12 @@ const personSchema = new Schema({
   },
   number: {
     type: String,
+    minLength: 5,
     required: true,
   },
+  test: String,
 });
+
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();

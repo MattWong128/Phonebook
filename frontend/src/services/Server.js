@@ -5,6 +5,7 @@ const baseUrl = '/api/persons';
 const create = (personObj) => {
   return axios.post(baseUrl, personObj).then((res) => res.data);
 };
+
 const get = () => {
   return axios.get(baseUrl).then((res) => res.data);
 };

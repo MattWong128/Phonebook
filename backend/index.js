@@ -59,7 +59,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
     });
 });
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const person = req.body;
   Person.find({})
     .then((peopleJSON) => {
@@ -67,6 +67,7 @@ app.post('/api/persons', (req, res) => {
       console.log('EXISTING NAMES', existingNames);
 
       if (!person) return res.status(400).end('invalid person cant add');
+
       if (!person.name)
         return res.status(400).json({
           error: 'must provide name',
@@ -87,7 +88,7 @@ app.post('/api/persons', (req, res) => {
       personToAdd.save().then(() => console.log('added person succesfully '));
       res.status(201).json(personToAdd);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => next(err));
 });
 
 app.put('/api/persons/:id', (req, res, next) => {

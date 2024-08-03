@@ -92,7 +92,7 @@ app.post('/api/persons', (req, res, next) => {
           res.status(201).json(personToAdd);
         })
         .catch((err) => {
-          res.status(404).json({ error: err.message });
+          // res.status(404).json({ error: err.message });
           next(err);
         });
     })
@@ -125,7 +125,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).send({ error: 'malformatted id' });
   }
   if (err.name === 'ValidationError') {
-    return response.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
   next(err);
 };

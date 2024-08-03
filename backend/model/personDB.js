@@ -17,12 +17,11 @@ mongoose
 const personSchema = new Schema({
   name: {
     type: String,
-    minLength: 5,
+    minLength: 3,
     required: true,
   },
   number: {
     type: String,
-    minLength: 5,
     required: true,
   },
   test: String,

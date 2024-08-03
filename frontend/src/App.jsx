@@ -75,7 +75,10 @@ const App = () => {
         setNewName('');
         setNewNumber('');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.response.data.error);
+        showMessage(err.response.data.error);
+      });
 
     console.log(persons);
     console.log('adding new persone: ', newPersonObj);

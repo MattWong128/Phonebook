@@ -10,7 +10,7 @@ morgan.token('person', (req, res) => {
   if (req.method == 'GET') return '';
   return JSON.stringify(req.body);
 });
-app.use(express.static('dist'));
+// app.use(express.static('dist'));
 app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'));
 app.use(cors());
@@ -66,17 +66,17 @@ app.post('/api/persons', (req, res, next) => {
       const existingNames = peopleJSON.map((person) => person.name);
       console.log('EXISTING NAMES', existingNames);
 
-      if (!person) return res.status(400).end('invalid person cant add');
+      // if (!person) return res.status(400).end('invalid person cant add');
 
-      if (!person.name)
-        return res.status(400).json({
-          error: 'must provide name',
-        });
+      // if (!person.name)
+      //   return res.status(400).json({
+      //     error: 'must provide name',
+      //   });
 
-      if (!person.number)
-        return res.status(400).json({
-          error: 'must provide number',
-        });
+      // if (!person.number)
+      //   return res.status(400).json({
+      //     error: 'must provide number',
+      //   });
       if (existingNames.find((p) => p == person.name))
         return res.status(400).json({
           error: 'must provide unique name',
@@ -85,8 +85,16 @@ app.post('/api/persons', (req, res, next) => {
       const personToAdd = new Person({
         ...person,
       });
-      personToAdd.save().then(() => console.log('added person succesfully '));
-      res.status(201).json(personToAdd);
+      personToAdd
+        .save()
+        .then(() => {
+          console.log('added person succesfully ');
+          res.status(201).json(personToAdd);
+        })
+        .catch((err) => {
+          res.status(404).json({ error: err.message });
+          next(err);
+        });
     })
     .catch((err) => next(err));
 });
@@ -115,6 +123,9 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' });
+  }
+  if (err.name === 'ValidationError') {
+    return response.status(400).json({ error: err.message });
   }
   next(err);
 };

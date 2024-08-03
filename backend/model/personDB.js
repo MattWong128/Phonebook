@@ -15,8 +15,15 @@ mongoose
   });
 
 const personSchema = new Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minLength: 5,
+    required: true,
+  },
+  number: {
+    type: String,
+    required: true,
+  },
 });
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {

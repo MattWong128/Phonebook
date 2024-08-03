@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const url = process.env.URL;
 mongoose.set('strictQuery', false);
 
+console.log(url);
 mongoose
   .connect(url)
 

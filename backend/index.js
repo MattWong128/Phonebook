@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT;
 
-morgan.token('person', (req, res) => {
+morgan.token('person', (req) => {
   if (req.method == 'GET') return '';
   return JSON.stringify(req.body);
 });
@@ -101,7 +101,7 @@ app.post('/api/persons', (req, res, next) => {
 
 app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body;
-  updatedPerson = {
+  const updatedPerson = {
     name: body.name,
     number: body.number,
   };

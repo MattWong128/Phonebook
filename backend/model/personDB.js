@@ -4,11 +4,10 @@ const { Schema } = mongoose;
 const url = process.env.URL;
 mongoose.set('strictQuery', false);
 
-console.log(url);
 mongoose
   .connect(url)
 
-  .then((result) => {
+  .then(() => {
     console.log('DATABASE SUCCESSFULLY CONNECTED');
   })
   .catch((error) => {
@@ -43,14 +42,5 @@ personSchema.set('toJSON', {
   },
 });
 const Person = mongoose.model('Person', personSchema);
-// const person = new Person({
-//   name: 'MARCUS',
-//   number: 123,
-// });
-// person.save();
-
-// Person.find({})
-//   .then((persons) => console.log(persons))
-//   .catch((err) => console.log('eror', err));
 
 module.exports = Person;

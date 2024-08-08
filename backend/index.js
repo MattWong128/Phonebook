@@ -1,10 +1,11 @@
-require('dotenv').config();
 const Person = require('./model/personDB');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT;
+const logger = require('./utils/logger');
+const config = require('./utils/config');
+const PORT = config.PORT;
 
 morgan.token('person', (req) => {
   if (req.method == 'GET') return '';
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'));
 app.use(cors());
 
-app.listen(PORT, () => console.log('listening on port ', PORT));
+app.listen(PORT, () => logger.info(`Server running on port ${config.PORT}...`));
 
 app.get('/', (req, res) => res.send('hello'));
 

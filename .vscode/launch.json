@@ -17,7 +17,8 @@
       "envFile": "${workspaceFolder}/backend/.env",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/backend/index.js"
+      "program": "${workspaceFolder}/backend/index.js",
+      "cwd": "${workspaceFolder}/backend"
     }
   ]
 }
